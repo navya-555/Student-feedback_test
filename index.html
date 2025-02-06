@@ -554,15 +554,15 @@
         <p>This gives us an <strong>MSE of 0.25</strong>, which is a good indication of how well our model fits the
             data.</p>
 
-
-        <div class="question-container">
+        <!-- Question 5 -->
+        <div class="question-container" data-question-id="Q5">
             <h4 class="question-title">Try this out 🤔</h4>
 
-            <!-- Question 5 -->
+
             <p class="question-text"><strong>If the predicted value for Y (Ŷ) is close to the actual value (Y), what
                     can we infer about the model's performance?</strong></p>
 
-            <form class="question-form" id="Q5">
+            <form class="question-form">
                 <div class="question-options">
                     <label class="question-option">
                         <input type="radio" name="answerQ5" value="A">
@@ -587,12 +587,14 @@
 
                 <button type="submit" class="submit-button">Check Answer</button>
             </form>
-
             <div id="feedback-Q5" class="feedback-text"></div>
+        </div>
 
-            <!-- Question 6 -->
-            <p class="question-text"><strong>In the example, what would be the squared error for the data point X =
-                    4, Y
+        <!-- Question 6 -->
+        <div class="question-container" data-question-id="Q6">
+            <h4 class="question-title">Try this out 🤔</h4>
+
+            <p class="question-text"><strong>In the example, what would be the squared error for the data point X = 4, Y
                     = 3.5, when β₀ = 1 and β₁ = 0.5?</strong></p>
 
             <form class="question-form">
@@ -620,6 +622,9 @@
 
                 <button type="submit" class="submit-button">Check Answer</button>
             </form>
+
+            <!-- Feedback Container -->
+            <div id="feedback-Q6" class="feedback-text"></div>
         </div>
 
         <h2>Expanding Our Model: Multiple Linear Regression 🍕📈</h2>
@@ -718,11 +723,11 @@
             adjust
             our model (maybe some friends are hungrier than we thought!).</p>
 
-        <div class="question-container">
+        <!-- Question 7 -->
+        <div class="question-container" data-question-id="Q7">
             <h4 class="question-title">Try this out 🤔</h4>
 
-            <p class="question-text"><strong>If you wanted to predict how many pizzas are needed for a large
-                    gathering
+            <p class="question-text"><strong>If you wanted to predict how many pizzas are needed for a large gathering
                     with 12 friends, an average hunger level of 9, and medium-sized pizzas (12 inches), which of the
                     following equations would you use?</strong></p>
 
@@ -752,6 +757,13 @@
                 <button type="submit" class="submit-button">Check Answer</button>
             </form>
 
+            <!-- Feedback Container -->
+            <div id="feedback-Q7" class="feedback-text"></div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-container" data-question-id="Q8">
+            <h4 class="question-title">Try this out 🤔</h4>
             <p class="question-text"><strong>You're trying to predict the rental price of an apartment using
                     multiple
                     factors, including size (in square feet), number of rooms, and neighborhood. You test two
@@ -790,6 +802,8 @@
                 <button type="submit" class="submit-button">Check Answer</button>
             </form>
 
+            <!-- Feedback Container -->
+            <div id="feedback-Q8" class="feedback-text"></div>
         </div>
 
 
@@ -940,13 +954,72 @@
         }
     };
 
+    const feedbackDataQ6 = {
+        A: {
+            correct: "Incorrect! The squared error is calculated as (actual Y - predicted Y)². Try recalculating the predicted value using the given equation.",
+            incorrect: "Incorrect! You need to calculate the predicted Y using the formula Ŷ = β₀ + β₁X and then find the squared error."
+        },
+        B: {
+            correct: "Incorrect! Recalculate the predicted value using Ŷ = β₀ + β₁X and then compute the squared error (actual Y - predicted Y)².",
+            incorrect: "Incorrect! Make sure you correctly apply the formula and square the error difference."
+        },
+        C: {
+            correct: "Correct! The predicted Y is calculated as Ŷ = 1 + (0.5 × 4) = 3. The squared error is (3.5 - 3)² = 0.25.",
+            incorrect: "Incorrect! Try recalculating the predicted Y and the squared error using the formula."
+        },
+        D: {
+            correct: "Incorrect! A squared error of 1 would require a much larger difference between the actual and predicted values.",
+            incorrect: "Incorrect! The squared error is calculated as (actual Y - predicted Y)². Make sure you're correctly applying the formula."
+        }
+    };
+
+    const feedbackDataQ7 = {
+        A: {
+            correct: "Correct! This equation correctly accounts for the number of friends, hunger level, and pizza size, making it the best choice.",
+            incorrect: "Incorrect! Try plugging in the values into each equation to see which one best predicts the number of pizzas."
+        },
+        B: {
+            correct: "Incorrect! The coefficients in this equation are not structured correctly for this prediction.",
+            incorrect: "Incorrect! Double-check the weight given to hunger level and number of friends."
+        },
+        C: {
+            correct: "Incorrect! This equation uses incorrect values for the number of friends and hunger levels.",
+            incorrect: "Incorrect! The variables in this equation don’t match the problem statement."
+        },
+        D: {
+            correct: "Incorrect! The equation incorrectly adds the pizza size factor rather than subtracting it.",
+            incorrect: "Incorrect! The last term should be subtracted rather than added."
+        }
+    };
+
+    const feedbackDataQ8 = {
+        A: {
+            correct: "Incorrect! While Model B has a higher R², that doesn’t always mean it's the best model. It could be overfitting.",
+            incorrect: "Incorrect! A high R² doesn’t guarantee that the model generalizes well to new data."
+        },
+        B: {
+            correct: "Incorrect! Simplicity is good, but if Model B provides significantly better predictions, it may be worth the extra complexity.",
+            incorrect: "Incorrect! Choosing a model isn’t just about speed; predictive accuracy matters too."
+        },
+        C: {
+            correct: "Correct! A higher R² with more variables suggests possible overfitting. Model B may be capturing noise rather than just useful patterns.",
+            incorrect: "Incorrect! A more complex model isn’t always better—overfitting is a real concern."
+        },
+        D: {
+            correct: "Incorrect! R² is a useful metric in evaluating models, but it shouldn't be the sole criterion for choosing a model.",
+            incorrect: "Incorrect! The R² value is important, just not the only factor to consider."
+        }
+    };
+
     // Initialize feedback handling for Questions
     handleQuestionFeedback("Q1", "B", feedbackDataQ1);
     handleQuestionFeedback("Q2", "C", feedbackDataQ2);
     handleQuestionFeedback("Q3", "B", feedbackDataQ3);
     handleQuestionFeedback("Q4", "A", feedbackDataQ4);
     handleQuestionFeedback("Q5", "B", feedbackDataQ5);
-
+    handleQuestionFeedback("Q6", "C", feedbackDataQ6);
+    handleQuestionFeedback("Q7", "A", feedbackDataQ7);
+    handleQuestionFeedback("Q8", "C", feedbackDataQ8);
 </script>
 
 </html>
