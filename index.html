@@ -15,6 +15,44 @@
             line-height: 1.6;
         }
 
+        .name-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffebcc;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .name-input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .start-button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            background-color: #ff9800;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .start-button:hover {
+            background-color: #e68900;
+        }
+
+        .hidden {
+            display: none;
+        }
+
         .container {
             max-width: 800px;
             margin: 20px auto;
@@ -196,667 +234,842 @@
             border: 1px solid #ffeeba;
             /* Light yellow border */
         }
+
+        /* Spinner CSS */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            /* Light grey */
+            border-top: 4px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            display: none;
+            /* Initially hidden */
+            margin: 20px auto;
+        }
+
+        /* Spinner animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
 
-        <h1>Linear Regression: Predicting Relationships the Fun Way 🍕📊</h1>
+    <!-- Name Input Section -->
+    <div class="name-section" id="name-section">
+        <h2>Hey there! 👋 Before we start...</h2>
+        <p>Let's make this fun! What's your name? 🤩</p>
+        <input type="text" id="user-name" class="name-input" placeholder="Enter your name here">
+        <button class="start-button" onclick="startLesson()">Start Learning! 🚀</button>
+    </div>
 
-        <h2>The Story: Pizza Party Predictions 🎉🍕</h2>
-        <p>Imagine you're throwing a pizza party for your friends. You know the more friends you invite, the more pizzas
-            you'll need. But how many pizzas? If you invite 5 friends, will 3 pizzas be enough, or will you need 4? And
-            what if you invite 10 friends? You don't want to run out of pizza halfway through the party, right?</p>
-        <p>You start noticing a pattern: each additional friend you invite seems to require just one more pizza. With
-            each new friend, the number of pizzas you need increases linearly. This gives you a clue: <span
-                class="highlight">Linear regression</span> could help you predict how many pizzas you'll need based on
-            the number of friends.</p>
+    <!-- Main Content (Initially Hidden) -->
+    <div id="main-content" class="hidden">
+        <div class="container">
 
-        <h2>Introducing Linear Regression: A Handy Prediction Tool 🤖</h2>
+            <h1 id="welcome-message">Linear Regression: Predicting Relationships the Fun Way 🍕📊</h1>
 
-        <p>In real life, this is exactly what linear regression does. It helps you find relationships between
-            variables—like the relationship between the number of friends you invite (the independent variable) and the
-            number of pizzas you need (the dependent variable). Essentially, linear regression helps you predict a
-            dependent variable using one or more independent variables.
-            <br>So, for our pizza party, linear regression helps you predict the number of pizzas based on how many
-            people
-            you're expecting. And the cool part? We can use math to create a model that predicts this relationship!
-        </p>
+            <h2>The Story: Pizza Party Predictions 🎉🍕</h2>
+            <p>Imagine you're throwing a pizza party for your friends. You know the more friends you invite, the more
+                pizzas
+                you'll need. But how many pizzas? If you invite 5 friends, will 3 pizzas be enough, or will you need 4?
+                And
+                what if you invite 10 friends? You don't want to run out of pizza halfway through the party, right?</p>
+            <p>You start noticing a pattern: each additional friend you invite seems to require just one more pizza.
+                With
+                each new friend, the number of pizzas you need increases linearly. This gives you a clue: <span
+                    class="highlight">Linear regression</span> could help you predict how many pizzas you'll need based
+                on
+                the number of friends.</p>
 
-        <h2>The Mathematical Model for Simple Linear Regression 📏</h2>
-        <p>In Simple Linear Regression, we use a formula to describe the relationship between the number of friends and
-            the number of pizzas. This formula looks like this:</p>
+            <h2>Introducing Linear Regression: A Handy Prediction Tool 🤖</h2>
 
-        <div class="formula">Y = β₀ + β₁X</div>
-        <p>Where:</p>
-        <ul>
-            <li><strong>Y</strong>: Predicted number of pizzas (dependent variable).</li>
-            <li><strong>X</strong>: Number of friends (independent variable)</li>
-            <li><strong>β₀</strong>: Intercept, which tells us how many pizzas we need even if no friends show up (the
-                starting point)</li>
-            <li><strong>β₁</strong>: Slope, showing how many additional pizzas are needed for each new friend invited.
-            </li>
-        </ul>
-
-        <p>This formula tells us the relationship between X (friends) and Y (pizzas). In our case, it could be:</p>
-        <div class="formula">Y = 1 + 0.5X</div>
-
-        <p>This means:</p>
-        <ul>
-            <li>Even if no friends show up (X = 0), we still need 1 pizza (β₀ = 1).</li>
-            <li>For each friend you invite, you need an extra 0.5 pizza (β₁ = 0.5).</li>
-        </ul>
-
-        <h3>Worked-Out Examples: Using the Equation for Predictions 📊</h3>
-
-        <h4>Scenario 1: 5 Friends</h4>
-        <p>If you invite 5 friends, we substitute X = 5 into the equation:</p>
-        <div class="formula">Y = 1 + 0.5(5) = 1 + 2.5 = 3.5 pizzas</div>
-
-        <h4>Scenario 2: 10 Friends</h4>
-        <p>If you invite 10 friends, substitute X = 10 into the equation:</p>
-        <div class="formula">Y = 1 + 0.5(10) = 1 + 5 = 6 pizzas</div>
-
-        <h4>Scenario 3: 0 Friends</h4>
-        <p>What if you have no friends coming over? You'd still need at least 1 pizza for yourself:</p>
-        <div class="formula">Y = 1 + 0.5(0) = 1 + 0 = 1 pizza</div>
-
-        <p>Even with no friends, at least one pizza is necessary!</p>
-
-        <!-- Question 1 -->
-        <div class="question-container" data-question-id="Q1">
-            <h4 class="question-title">Try this out 🤔</h4>
-            <p class="question-text">A husband wants to predict how much his wife will spend based on the amount of
-                time
-                she spends in the shop.</p>
-            <p class="question-text"><strong>Which of the following is the independent and dependent
-                    variable?</strong></p>
-
-            <form class="question-form">
-                <div class="question-options">
-                    <label class="question-option">
-                        <input type="radio" name="answerQ1" value="A">
-                        <span class="option-text">A: Independent variable: Amount of money spent, Dependent
-                            variable:
-                            Time spent in the shop</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ1" value="B">
-                        <span class="option-text">B: Independent variable: Time spent in the shop, Dependent
-                            variable:
-                            Amount of money spent</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ1" value="C">
-                        <span class="option-text">C: Independent variable: Time of day, Dependent variable: Time
-                            spent
-                            in the shop</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ1" value="D">
-                        <span class="option-text">D: Independent variable: Amount of money spent, Dependent
-                            variable:
-                            Time of day</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
-
-            <div class="feedback-text" id="feedback-Q1"></div>
-        </div>
-        <!-- Question 2 -->
-        <div class="question-container" data-question-id="Q2">
-            <h4 class="question-title">Try this out 🤔</h4>
-            <p class="question-text">Based on past experiences, the husband creates a formula to predict how
-                much his
-                wife will spend based on the amount of time she spends in the shop. The formula is as follows:
+            <p>In real life, this is exactly what linear regression does. It helps you find relationships between
+                variables—like the relationship between the number of friends you invite (the independent variable) and
+                the
+                number of pizzas you need (the dependent variable). Essentially, linear regression helps you predict a
+                dependent variable using one or more independent variables.
+                <br>So, for our pizza party, linear regression helps you predict the number of pizzas based on how many
+                people
+                you're expecting. And the cool part? We can use math to create a model that predicts this relationship!
             </p>
-            <p class="question-text"><strong>Spending = 20 + 30 * Time spent in the shop (in hours)</strong></p>
-            <p class="question-text"><strong>If the husband predicts that his wife will spend 3 hours in the
-                    shop, how
-                    much will she spend?</strong></p>
 
-            <form class="question-form">
-                <div class="question-options">
-                    <label class="question-option">
-                        <input type="radio" name="answerQ2" value="A">
-                        <span class="option-text">A: $20</span>
-                    </label>
+            <h2>The Mathematical Model for Simple Linear Regression 📏</h2>
+            <p>In Simple Linear Regression, we use a formula to describe the relationship between the number of friends
+                and
+                the number of pizzas. This formula looks like this:</p>
 
-                    <label class="question-option">
-                        <input type="radio" name="answerQ2" value="B">
-                        <span class="option-text">B: $80</span>
-                    </label>
+            <div class="formula">Y = β₀ + β₁X</div>
+            <p>Where:</p>
+            <ul>
+                <li><strong>Y</strong>: Predicted number of pizzas (dependent variable).</li>
+                <li><strong>X</strong>: Number of friends (independent variable)</li>
+                <li><strong>β₀</strong>: Intercept, which tells us how many pizzas we need even if no friends show up
+                    (the
+                    starting point)</li>
+                <li><strong>β₁</strong>: Slope, showing how many additional pizzas are needed for each new friend
+                    invited.
+                </li>
+            </ul>
 
-                    <label class="question-option">
-                        <input type="radio" name="answerQ2" value="C">
-                        <span class="option-text">C: $110</span>
-                    </label>
+            <p>This formula tells us the relationship between X (friends) and Y (pizzas). In our case, it could be:</p>
+            <div class="formula">Y = 1 + 0.5X</div>
 
-                    <label class="question-option">
-                        <input type="radio" name="answerQ2" value="D">
-                        <span class="option-text">D: $90</span>
-                    </label>
-                </div>
+            <p>This means:</p>
+            <ul>
+                <li>Even if no friends show up (X = 0), we still need 1 pizza (β₀ = 1).</li>
+                <li>For each friend you invite, you need an extra 0.5 pizza (β₁ = 0.5).</li>
+            </ul>
 
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
+            <h3>Worked-Out Examples: Using the Equation for Predictions 📊</h3>
 
-            <div class="feedback-text" id="feedback-Q2"></div>
+            <h4>Scenario 1: 5 Friends</h4>
+            <p>If you invite 5 friends, we substitute X = 5 into the equation:</p>
+            <div class="formula">Y = 1 + 0.5(5) = 1 + 2.5 = 3.5 pizzas</div>
+
+            <h4>Scenario 2: 10 Friends</h4>
+            <p>If you invite 10 friends, substitute X = 10 into the equation:</p>
+            <div class="formula">Y = 1 + 0.5(10) = 1 + 5 = 6 pizzas</div>
+
+            <h4>Scenario 3: 0 Friends</h4>
+            <p>What if you have no friends coming over? You'd still need at least 1 pizza for yourself:</p>
+            <div class="formula">Y = 1 + 0.5(0) = 1 + 0 = 1 pizza</div>
+
+            <p>Even with no friends, at least one pizza is necessary!</p>
+
+            <!-- Question 1 -->
+            <div class="question-container" data-question-id="Q1">
+                <h4 class="question-title">Try this out 🤔</h4>
+                <p class="question-text">A husband wants to predict how much his wife will spend based on the amount of
+                    time
+                    she spends in the shop.</p>
+                <p class="question-text"><strong>Which of the following is the independent and dependent
+                        variable?</strong></p>
+
+                <form class="question-form">
+                    <div class="question-options">
+                        <label class="question-option">
+                            <input type="radio" name="answerQ1" value="A">
+                            <span class="option-text">A: Independent variable: Amount of money spent, Dependent
+                                variable:
+                                Time spent in the shop</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ1" value="B">
+                            <span class="option-text">B: Independent variable: Time spent in the shop, Dependent
+                                variable:
+                                Amount of money spent</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ1" value="C">
+                            <span class="option-text">C: Independent variable: Time of day, Dependent variable: Time
+                                spent
+                                in the shop</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ1" value="D">
+                            <span class="option-text">D: Independent variable: Amount of money spent, Dependent
+                                variable:
+                                Time of day</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Check Answer</button>
+                </form>
+
+                <div class="feedback-text" id="feedback-Q1"></div>
+            </div>
+            <!-- Question 2 -->
+            <div class="question-container" data-question-id="Q2">
+                <h4 class="question-title">Try this out 🤔</h4>
+                <p class="question-text">Based on past experiences, the husband creates a formula to predict how
+                    much his
+                    wife will spend based on the amount of time she spends in the shop. The formula is as follows:
+                </p>
+                <p class="question-text"><strong>Spending = 20 + 30 * Time spent in the shop (in hours)</strong></p>
+                <p class="question-text"><strong>If the husband predicts that his wife will spend 3 hours in the
+                        shop, how
+                        much will she spend?</strong></p>
+
+                <form class="question-form">
+                    <div class="question-options">
+                        <label class="question-option">
+                            <input type="radio" name="answerQ2" value="A">
+                            <span class="option-text">A: $20</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ2" value="B">
+                            <span class="option-text">B: $80</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ2" value="C">
+                            <span class="option-text">C: $110</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ2" value="D">
+                            <span class="option-text">D: $90</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Check Answer</button>
+                </form>
+
+                <div class="feedback-text" id="feedback-Q2"></div>
+            </div>
+            <!-- Question 3 -->
+            <div class="question-container" data-question-id="Q3">
+                <h4 class="question-title">Try this out 🤔</h4>
+                <p class="question-text"><strong>How many variables are required to represent a simple linear
+                        regression model?</strong></p>
+
+                <form class="question-form">
+                    <div class="question-options">
+                        <label class="question-option">
+                            <input type="radio" name="answerQ3" value="A">
+                            <span class="option-text">A: 3</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ3" value="B">
+                            <span class="option-text">B: 2</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ3" value="C">
+                            <span class="option-text">C: 1</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ3" value="D">
+                            <span class="option-text">D: 4</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Check Answer</button>
+                </form>
+
+                <div class="feedback-text" id="feedback-Q3"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-container" data-question-id="Q4">
+                <h4 class="question-title">Try this out 🤔</h4>
+                <p class="question-text"><strong>Analysis produces the equation Y = -3.2X + 7. This indicates
+                        that:</strong></p>
+
+                <form class="question-form">
+                    <div class="question-options">
+                        <label class="question-option">
+                            <input type="radio" name="answerQ4" value="A">
+                            <span class="option-text">A: A 1 unit increase in X results in a 3.2 unit decrease in
+                                Y.</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ4" value="B">
+                            <span class="option-text">B: A 1 unit decrease in X results in a 3.2 unit decrease in
+                                Y.</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ4" value="C">
+                            <span class="option-text">C: A 1 unit increase in X results in a 3.2 unit increase in
+                                Y.</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ4" value="D">
+                            <span class="option-text">D: An X value of 0 would increase Y by 7.</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Check Answer</button>
+                </form>
+
+                <div class="feedback-text" id="feedback-Q4"></div>
+            </div>
+
+
+
+            <h2>Finding the Values of β₀ and β₁: How Do We Know What They Are? 🔍</h2>
+            <p>In the previous example, we made an assumption about the values of β₀ and β₁. But what if we didn't know
+                these values beforehand? How would we find them?</p>
+
+            <h3>Using Data to Determine β₀ and β₁</h3>
+            <p>To figure out the values of β₀ and β₁, we need some real data. Let's say we have the following data from
+                your
+                last 5 pizza parties:</p>
+
+            <table>
+                <tr>
+                    <th>Number of Friends (X)</th>
+                    <th>Number of Pizzas (Y)</th>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>3.5</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>4.5</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>5.5</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>6.5</td>
+                </tr>
+            </table>
+
+            <p>Using this table, we need to find the line that best fits this data. We will calculate β₀ and β₁
+                (intercept
+                and slope) based on the relationship between X (number of friends) and Y (number of pizzas).</p>
+
+            <p>Now, the actual process of determining β₀ and β₁ using this data will be covered later in more detail (in
+                an
+                upcoming section) because it involves some math that we'll explain step-by-step. For now, just know that
+                these values are key to building an accurate prediction model.</p>
+
+            <h2>Error or Cost Function: How Well Does Our Model Fit? 💡</h2>
+            <p>Once we have the best-fit line (with our β₀ and β₁), we need to check how well it predicts the actual
+                number
+                of pizzas. This is where the error comes in, and we use the cost function to measure the overall error
+                of
+                our model.</p>
+
+            <h3>Mean Squared Error (MSE)</h3>
+            <p>The cost function in linear regression is often calculated using <strong>Mean Squared Error
+                    (MSE)</strong>,
+                which tells us the average of the squared differences between the actual values (Y<sub>i</sub>) and the
+                predicted values (Ŷ<sub>i</sub>). The formula is:</p>
+
+            <div class="formula">
+                MSE = (1/n) Σ (Y<sub>i</sub> - Ŷ<sub>i</sub>)²
+            </div>
+
+            <p>Where:</p>
+            <ul>
+                <li><strong>Y<sub>i</sub></strong>: Actual value (from our data table).</li>
+                <li><strong>Ŷ<sub>i</sub></strong>: Predicted value (from our model).</li>
+                <li><strong>n</strong>: Number of data points.</li>
+            </ul>
+
+            <p>The lower the MSE, the better our model is at predicting the right number of pizzas!</p>
+
+            <h3>Example: Calculating MSE</h3>
+            <p>Let's say after finding our values of β₀ = 1 and β₁ = 0.5, we make predictions for each of the 5 data
+                points.
+                Here's how the predicted values would look:</p>
+
+            <table>
+                <tr>
+                    <th>X (Friends)</th>
+                    <th>Y (Actual Pizzas)</th>
+                    <th>Ŷ (Predicted Pizzas)</th>
+                    <th>Error (Y - Ŷ)</th>
+                    <th>(Error)²</th>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>3.5</td>
+                    <td>3</td>
+                    <td>0.5</td>
+                    <td>0.25</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>4.5</td>
+                    <td>4</td>
+                    <td>0.5</td>
+                    <td>0.25</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>5.5</td>
+                    <td>5</td>
+                    <td>0.5</td>
+                    <td>0.25</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>6.5</td>
+                    <td>6</td>
+                    <td>0.5</td>
+                    <td>0.25</td>
+                </tr>
+            </table>
+
+            <p>Now, we sum the squared errors and divide by the number of data points:</p>
+
+            <div class="formula">
+                MSE = (0 + 0.25 + 0.25 + 0.25 + 0.25) / 5 = 1.25 / 5 = 0.25
+            </div>
+
+            <p>This gives us an <strong>MSE of 0.25</strong>, which is a good indication of how well our model fits the
+                data.</p>
+
+            <!-- Question 5 -->
+            <div class="question-container" data-question-id="Q5">
+                <h4 class="question-title">Try this out 🤔</h4>
+
+
+                <p class="question-text"><strong>If the predicted value for Y (Ŷ) is close to the actual value (Y), what
+                        can we infer about the model's performance?</strong></p>
+
+                <form class="question-form">
+                    <div class="question-options">
+                        <label class="question-option">
+                            <input type="radio" name="answerQ5" value="A">
+                            <span class="option-text">A: The model has a high MSE</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ5" value="B">
+                            <span class="option-text">B: The model has a low MSE</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ5" value="C">
+                            <span class="option-text">C: The model is inaccurate</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ5" value="D">
+                            <span class="option-text">D: The model is overfitting</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Check Answer</button>
+                </form>
+                <div id="feedback-Q5" class="feedback-text"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-container" data-question-id="Q6">
+                <h4 class="question-title">Try this out 🤔</h4>
+
+                <p class="question-text"><strong>In the example, what would be the squared error for the data point X =
+                        4, Y
+                        = 3.5, when β₀ = 1 and β₁ = 0.5?</strong></p>
+
+                <form class="question-form">
+                    <div class="question-options">
+                        <label class="question-option">
+                            <input type="radio" name="answerQ6" value="A">
+                            <span class="option-text">A: 0</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ6" value="B">
+                            <span class="option-text">B: 0.5</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ6" value="C">
+                            <span class="option-text">C: 0.25</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ6" value="D">
+                            <span class="option-text">D: 1</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Check Answer</button>
+                </form>
+
+                <!-- Feedback Container -->
+                <div id="feedback-Q6" class="feedback-text"></div>
+            </div>
+
+            <h2>Expanding Our Model: Multiple Linear Regression 🍕📈</h2>
+            <p>In our simple linear regression example, we looked at just one factor—the number of friends invited—to
+                figure
+                out how many pizzas we'd need. But, let's be real, there are a lot more things to consider. Some friends
+                might eat more than others, and the pizza size definitely matters. To make better predictions, we can
+                use
+                <strong>Multiple Linear Regression</strong>, which lets us include more than one factor.
+            </p>
+
+            <h2>From Simple to Multiple Linear Regression 🔄</h2>
+            <p>Before, our formula was pretty simple:</p>
+            <div class="formula">
+                Y = 1 + 0.5X
+            </div>
+            <p>Where:</p>
+            <ul>
+                <li><strong>Y</strong> is the number of pizzas needed</li>
+                <li><strong>X</strong> is the number of friends invited</li>
+                <li><strong>1</strong> is the baseline number of pizzas (the intercept)</li>
+                <li><strong>0.5</strong> is how much pizza consumption increases for each additional friend (the slope)
+                </li>
+            </ul>
+            <p>Now, let's make things a bit smarter by adding more relevant factors into the mix.</p>
+
+            <h3>The General Formula for Multiple Linear Regression 🧮</h3>
+            <p>In Multiple Linear Regression, we can create a formula that includes multiple factors:</p>
+            <div class="formula">
+                Y = β₀ + β₁X₁ + β₂X₂ + β₃X₃ + ... + βₙXₙ
+            </div>
+            <p>Where:</p>
+            <ul>
+                <li><strong>Y</strong> = The predicted number of pizzas 🍕</li>
+                <li><strong>X₁, X₂, X₃... Xₙ</strong> = Different factors (things that affect pizza consumption)</li>
+                <li><strong>β₀</strong> = The starting point (what happens when all factors are zero)</li>
+                <li><strong>β₁, β₂, β₃... βₙ</strong> = How much each factor changes the prediction</li>
+            </ul>
+            <p>For our pizza party, let's think about some key factors:</p>
+            <ul>
+                <li><strong>X₁</strong> = Number of friends invited 👥</li>
+                <li><strong>X₂</strong> = Average hunger level of friends (1-10 scale) 🍔</li>
+                <li><strong>X₃</strong> = Pizza size (in inches) 🍕</li>
+            </ul>
+
+            <p>We're just going to assume values for β₀, β₁, β₂, and β₃ right now to show how this works. The exact
+                values
+                will come later when we dig into Least Squares Estimation.</p>
+
+            <h3>For now, let's say we're using these values:</h3>
+            <div class="formula">
+                Pizzas Needed = 1 + 0.5X₁ + 0.75X₂ - 0.3X₃
+            </div>
+
+            <h2>Making Predictions with Multiple Regression 🎯</h2>
+
+            <h3>Scenario 1: A Small Gathering</h3>
+            <p>X₁ = 6 (6 friends invited)<br>
+                X₂ = 5 (They're kind of hungry)<br>
+                X₃ = 16 (Large pizzas)</p>
+            <p>Plugging in those numbers:</p>
+            <div class="formula">
+                Pizzas Needed = 1 + (0.5 * 6) + (0.75 * 5) - (0.3 * 16)
+                = 1 + 3 + 3.75 - 4.8
+                = 2.95 ≈ 3 pizzas
+            </div>
+            <p>So, for this group, 3 pizzas should be plenty! 🎉</p>
+
+            <h3>Scenario 2: A Big Game Night 🏈🍕</h3>
+            <p>X₁ = 12 (12 friends invited)<br>
+                X₂ = 9 (They're super hungry)<br>
+                X₃ = 12 (Medium-sized pizzas)</p>
+            <p>Plugging these in:</p>
+            <div class="formula">
+                Pizzas Needed = 1 + (0.5 * 12) + (0.75 * 9) - (0.3 * 12)
+                = 1 + 6 + 6.75 - 3.6
+                = 10.15 ≈ 10 pizzas
+            </div>
+            <p>Looks like you'll need 10 pizzas for this crew! 🍕🙌</p>
+
+            <h2>Measuring Accuracy: How Good is Our Model? 📏</h2>
+            <p>Just like with simple regression, we can check how accurate our predictions are using <strong>Mean
+                    Squared
+                    Error (MSE)</strong>:</p>
+            <div class="formula">
+                MSE = (1/n) ∑(Yᵢ - Ŷᵢ)²
+            </div>
+            <p>Where:</p>
+            <ul>
+                <li><strong>Yᵢ</strong> = The actual number of pizzas needed</li>
+                <li><strong>Ŷᵢ</strong> = The predicted number of pizzas</li>
+                <li><strong>n</strong> = The number of parties we're looking at</li>
+            </ul>
+
+            <p>A small MSE means our predictions are close to the real thing, while a big MSE means we might need to
+                adjust
+                our model (maybe some friends are hungrier than we thought!).</p>
+
+            <!-- Question 7 -->
+            <div class="question-container" data-question-id="Q7">
+                <h4 class="question-title">Try this out 🤔</h4>
+
+                <p class="question-text"><strong>If you wanted to predict how many pizzas are needed for a large
+                        gathering
+                        with 12 friends, an average hunger level of 9, and medium-sized pizzas (12 inches), which of the
+                        following equations would you use?</strong></p>
+
+                <form class="question-form">
+                    <div class="question-options">
+                        <label class="question-option">
+                            <input type="radio" name="answerQ7" value="A">
+                            <span class="option-text">A: Pizzas Needed = 1 + (0.5 * 12) + (0.75 * 9) - (0.3 * 12)</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ7" value="B">
+                            <span class="option-text">B: Pizzas Needed = 1 + (0.75 * 12) + (0.5 * 9) - (0.3 * 12)</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ7" value="C">
+                            <span class="option-text">C: Pizzas Needed = 1 + (0.5 * 6) + (0.75 * 5) - (0.3 * 16)</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ7" value="D">
+                            <span class="option-text">D: Pizzas Needed = 1 + (0.75 * 12) + (0.5 * 9) + (0.3 * 12)</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Check Answer</button>
+                </form>
+
+                <!-- Feedback Container -->
+                <div id="feedback-Q7" class="feedback-text"></div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-container" data-question-id="Q8">
+                <h4 class="question-title">Try this out 🤔</h4>
+                <p class="question-text"><strong>You're trying to predict the rental price of an apartment using
+                        multiple
+                        factors, including size (in square feet), number of rooms, and neighborhood. You test two
+                        models:</strong></p>
+                <p><strong>Model A:</strong> Includes size and number of rooms.</p>
+                <p><strong>Model B:</strong> Includes size, number of rooms, and neighborhood.</p>
+                <p>After running both models, you find that Model B has a significantly higher R² value but also takes
+                    longer to compute. What does this tell you?</p>
+
+                <form class="question-form">
+                    <div class="question-options">
+                        <label class="question-option">
+                            <input type="radio" name="answerQ8" value="A">
+                            <span class="option-text">A: Model B is definitely the better model because it explains more
+                                variance.</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ8" value="B">
+                            <span class="option-text">B: Model A should be preferred because it's faster and
+                                simpler.</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ8" value="C">
+                            <span class="option-text">C: Model B might be overfitting the data by including too many
+                                factors.</span>
+                        </label>
+
+                        <label class="question-option">
+                            <input type="radio" name="answerQ8" value="D">
+                            <span class="option-text">D: The R² value is irrelevant to choosing the best model.</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">Check Answer</button>
+                </form>
+
+                <!-- Feedback Container -->
+                <div id="feedback-Q8" class="feedback-text"></div>
+            </div>
+
+
+            <h3>Wrapping Up: Why Multiple Linear Regression Matters 🎓</h3>
+            <p>Now that we've moved from simple to multiple regression, you've got a much more powerful tool for making
+                predictions. Whether you're figuring out how many pizzas to order, predicting home prices, or
+                forecasting
+                business sales, this kind of regression can help you make smarter decisions based on real data! 📊</p>
+            <p>We used some example values for β₀, β₁, β₂, β₃, but in the real world, we calculate those using actual
+                data
+                and math tricks like Least Squares Estimation.</p>
+            <p>Want to dive deeper into how we figure out those values..?</p>
+
+            <!-- Button to trigger the data send -->
+            <button id="sendDataBtn" class="submit-button">Complete</button>
+
+            <!-- Loading spinner -->
+            <div id="spinner" class="spinner"></div>
+
+            <!-- Feedback message for submission status -->
+            <div id="feedback"></div>
+
+
         </div>
-        <!-- Question 3 -->
-        <div class="question-container" data-question-id="Q3">
-            <h4 class="question-title">Try this out 🤔</h4>
-            <p class="question-text"><strong>How many variables are required to represent a simple linear
-                    regression model?</strong></p>
-
-            <form class="question-form">
-                <div class="question-options">
-                    <label class="question-option">
-                        <input type="radio" name="answerQ3" value="A">
-                        <span class="option-text">A: 3</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ3" value="B">
-                        <span class="option-text">B: 2</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ3" value="C">
-                        <span class="option-text">C: 1</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ3" value="D">
-                        <span class="option-text">D: 4</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
-
-            <div class="feedback-text" id="feedback-Q3"></div>
-        </div>
-
-        <!-- Question 4 -->
-        <div class="question-container" data-question-id="Q4">
-            <h4 class="question-title">Try this out 🤔</h4>
-            <p class="question-text"><strong>Analysis produces the equation Y = -3.2X + 7. This indicates
-                    that:</strong></p>
-
-            <form class="question-form">
-                <div class="question-options">
-                    <label class="question-option">
-                        <input type="radio" name="answerQ4" value="A">
-                        <span class="option-text">A: A 1 unit increase in X results in a 3.2 unit decrease in
-                            Y.</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ4" value="B">
-                        <span class="option-text">B: A 1 unit decrease in X results in a 3.2 unit decrease in
-                            Y.</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ4" value="C">
-                        <span class="option-text">C: A 1 unit increase in X results in a 3.2 unit increase in
-                            Y.</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ4" value="D">
-                        <span class="option-text">D: An X value of 0 would increase Y by 7.</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
-
-            <div class="feedback-text" id="feedback-Q4"></div>
-        </div>
-
-
-
-        <h2>Finding the Values of β₀ and β₁: How Do We Know What They Are? 🔍</h2>
-        <p>In the previous example, we made an assumption about the values of β₀ and β₁. But what if we didn't know
-            these values beforehand? How would we find them?</p>
-
-        <h3>Using Data to Determine β₀ and β₁</h3>
-        <p>To figure out the values of β₀ and β₁, we need some real data. Let's say we have the following data from
-            your
-            last 5 pizza parties:</p>
-
-        <table>
-            <tr>
-                <th>Number of Friends (X)</th>
-                <th>Number of Pizzas (Y)</th>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>2</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>3.5</td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>4.5</td>
-            </tr>
-            <tr>
-                <td>8</td>
-                <td>5.5</td>
-            </tr>
-            <tr>
-                <td>10</td>
-                <td>6.5</td>
-            </tr>
-        </table>
-
-        <p>Using this table, we need to find the line that best fits this data. We will calculate β₀ and β₁
-            (intercept
-            and slope) based on the relationship between X (number of friends) and Y (number of pizzas).</p>
-
-        <p>Now, the actual process of determining β₀ and β₁ using this data will be covered later in more detail (in
-            an
-            upcoming section) because it involves some math that we'll explain step-by-step. For now, just know that
-            these values are key to building an accurate prediction model.</p>
-
-        <h2>Error or Cost Function: How Well Does Our Model Fit? 💡</h2>
-        <p>Once we have the best-fit line (with our β₀ and β₁), we need to check how well it predicts the actual
-            number
-            of pizzas. This is where the error comes in, and we use the cost function to measure the overall error
-            of
-            our model.</p>
-
-        <h3>Mean Squared Error (MSE)</h3>
-        <p>The cost function in linear regression is often calculated using <strong>Mean Squared Error
-                (MSE)</strong>,
-            which tells us the average of the squared differences between the actual values (Y<sub>i</sub>) and the
-            predicted values (Ŷ<sub>i</sub>). The formula is:</p>
-
-        <div class="formula">
-            MSE = (1/n) Σ (Y<sub>i</sub> - Ŷ<sub>i</sub>)²
-        </div>
-
-        <p>Where:</p>
-        <ul>
-            <li><strong>Y<sub>i</sub></strong>: Actual value (from our data table).</li>
-            <li><strong>Ŷ<sub>i</sub></strong>: Predicted value (from our model).</li>
-            <li><strong>n</strong>: Number of data points.</li>
-        </ul>
-
-        <p>The lower the MSE, the better our model is at predicting the right number of pizzas!</p>
-
-        <h3>Example: Calculating MSE</h3>
-        <p>Let's say after finding our values of β₀ = 1 and β₁ = 0.5, we make predictions for each of the 5 data
-            points.
-            Here's how the predicted values would look:</p>
-
-        <table>
-            <tr>
-                <th>X (Friends)</th>
-                <th>Y (Actual Pizzas)</th>
-                <th>Ŷ (Predicted Pizzas)</th>
-                <th>Error (Y - Ŷ)</th>
-                <th>(Error)²</th>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>3.5</td>
-                <td>3</td>
-                <td>0.5</td>
-                <td>0.25</td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>4.5</td>
-                <td>4</td>
-                <td>0.5</td>
-                <td>0.25</td>
-            </tr>
-            <tr>
-                <td>8</td>
-                <td>5.5</td>
-                <td>5</td>
-                <td>0.5</td>
-                <td>0.25</td>
-            </tr>
-            <tr>
-                <td>10</td>
-                <td>6.5</td>
-                <td>6</td>
-                <td>0.5</td>
-                <td>0.25</td>
-            </tr>
-        </table>
-
-        <p>Now, we sum the squared errors and divide by the number of data points:</p>
-
-        <div class="formula">
-            MSE = (0 + 0.25 + 0.25 + 0.25 + 0.25) / 5 = 1.25 / 5 = 0.25
-        </div>
-
-        <p>This gives us an <strong>MSE of 0.25</strong>, which is a good indication of how well our model fits the
-            data.</p>
-
-        <!-- Question 5 -->
-        <div class="question-container" data-question-id="Q5">
-            <h4 class="question-title">Try this out 🤔</h4>
-
-
-            <p class="question-text"><strong>If the predicted value for Y (Ŷ) is close to the actual value (Y), what
-                    can we infer about the model's performance?</strong></p>
-
-            <form class="question-form">
-                <div class="question-options">
-                    <label class="question-option">
-                        <input type="radio" name="answerQ5" value="A">
-                        <span class="option-text">A: The model has a high MSE</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ5" value="B">
-                        <span class="option-text">B: The model has a low MSE</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ5" value="C">
-                        <span class="option-text">C: The model is inaccurate</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ5" value="D">
-                        <span class="option-text">D: The model is overfitting</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
-            <div id="feedback-Q5" class="feedback-text"></div>
-        </div>
-
-        <!-- Question 6 -->
-        <div class="question-container" data-question-id="Q6">
-            <h4 class="question-title">Try this out 🤔</h4>
-
-            <p class="question-text"><strong>In the example, what would be the squared error for the data point X = 4, Y
-                    = 3.5, when β₀ = 1 and β₁ = 0.5?</strong></p>
-
-            <form class="question-form">
-                <div class="question-options">
-                    <label class="question-option">
-                        <input type="radio" name="answerQ6" value="A">
-                        <span class="option-text">A: 0</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ6" value="B">
-                        <span class="option-text">B: 0.5</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ6" value="C">
-                        <span class="option-text">C: 0.25</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ6" value="D">
-                        <span class="option-text">D: 1</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
-
-            <!-- Feedback Container -->
-            <div id="feedback-Q6" class="feedback-text"></div>
-        </div>
-
-        <h2>Expanding Our Model: Multiple Linear Regression 🍕📈</h2>
-        <p>In our simple linear regression example, we looked at just one factor—the number of friends invited—to
-            figure
-            out how many pizzas we'd need. But, let's be real, there are a lot more things to consider. Some friends
-            might eat more than others, and the pizza size definitely matters. To make better predictions, we can
-            use
-            <strong>Multiple Linear Regression</strong>, which lets us include more than one factor.
-        </p>
-
-        <h2>From Simple to Multiple Linear Regression 🔄</h2>
-        <p>Before, our formula was pretty simple:</p>
-        <div class="formula">
-            Y = 1 + 0.5X
-        </div>
-        <p>Where:</p>
-        <ul>
-            <li><strong>Y</strong> is the number of pizzas needed</li>
-            <li><strong>X</strong> is the number of friends invited</li>
-            <li><strong>1</strong> is the baseline number of pizzas (the intercept)</li>
-            <li><strong>0.5</strong> is how much pizza consumption increases for each additional friend (the slope)
-            </li>
-        </ul>
-        <p>Now, let's make things a bit smarter by adding more relevant factors into the mix.</p>
-
-        <h3>The General Formula for Multiple Linear Regression 🧮</h3>
-        <p>In Multiple Linear Regression, we can create a formula that includes multiple factors:</p>
-        <div class="formula">
-            Y = β₀ + β₁X₁ + β₂X₂ + β₃X₃ + ... + βₙXₙ
-        </div>
-        <p>Where:</p>
-        <ul>
-            <li><strong>Y</strong> = The predicted number of pizzas 🍕</li>
-            <li><strong>X₁, X₂, X₃... Xₙ</strong> = Different factors (things that affect pizza consumption)</li>
-            <li><strong>β₀</strong> = The starting point (what happens when all factors are zero)</li>
-            <li><strong>β₁, β₂, β₃... βₙ</strong> = How much each factor changes the prediction</li>
-        </ul>
-        <p>For our pizza party, let's think about some key factors:</p>
-        <ul>
-            <li><strong>X₁</strong> = Number of friends invited 👥</li>
-            <li><strong>X₂</strong> = Average hunger level of friends (1-10 scale) 🍔</li>
-            <li><strong>X₃</strong> = Pizza size (in inches) 🍕</li>
-        </ul>
-
-        <p>We're just going to assume values for β₀, β₁, β₂, and β₃ right now to show how this works. The exact
-            values
-            will come later when we dig into Least Squares Estimation.</p>
-
-        <h3>For now, let's say we're using these values:</h3>
-        <div class="formula">
-            Pizzas Needed = 1 + 0.5X₁ + 0.75X₂ - 0.3X₃
-        </div>
-
-        <h2>Making Predictions with Multiple Regression 🎯</h2>
-
-        <h3>Scenario 1: A Small Gathering</h3>
-        <p>X₁ = 6 (6 friends invited)<br>
-            X₂ = 5 (They're kind of hungry)<br>
-            X₃ = 16 (Large pizzas)</p>
-        <p>Plugging in those numbers:</p>
-        <div class="formula">
-            Pizzas Needed = 1 + (0.5 * 6) + (0.75 * 5) - (0.3 * 16)
-            = 1 + 3 + 3.75 - 4.8
-            = 2.95 ≈ 3 pizzas
-        </div>
-        <p>So, for this group, 3 pizzas should be plenty! 🎉</p>
-
-        <h3>Scenario 2: A Big Game Night 🏈🍕</h3>
-        <p>X₁ = 12 (12 friends invited)<br>
-            X₂ = 9 (They're super hungry)<br>
-            X₃ = 12 (Medium-sized pizzas)</p>
-        <p>Plugging these in:</p>
-        <div class="formula">
-            Pizzas Needed = 1 + (0.5 * 12) + (0.75 * 9) - (0.3 * 12)
-            = 1 + 6 + 6.75 - 3.6
-            = 10.15 ≈ 10 pizzas
-        </div>
-        <p>Looks like you'll need 10 pizzas for this crew! 🍕🙌</p>
-
-        <h2>Measuring Accuracy: How Good is Our Model? 📏</h2>
-        <p>Just like with simple regression, we can check how accurate our predictions are using <strong>Mean
-                Squared
-                Error (MSE)</strong>:</p>
-        <div class="formula">
-            MSE = (1/n) ∑(Yᵢ - Ŷᵢ)²
-        </div>
-        <p>Where:</p>
-        <ul>
-            <li><strong>Yᵢ</strong> = The actual number of pizzas needed</li>
-            <li><strong>Ŷᵢ</strong> = The predicted number of pizzas</li>
-            <li><strong>n</strong> = The number of parties we're looking at</li>
-        </ul>
-
-        <p>A small MSE means our predictions are close to the real thing, while a big MSE means we might need to
-            adjust
-            our model (maybe some friends are hungrier than we thought!).</p>
-
-        <!-- Question 7 -->
-        <div class="question-container" data-question-id="Q7">
-            <h4 class="question-title">Try this out 🤔</h4>
-
-            <p class="question-text"><strong>If you wanted to predict how many pizzas are needed for a large gathering
-                    with 12 friends, an average hunger level of 9, and medium-sized pizzas (12 inches), which of the
-                    following equations would you use?</strong></p>
-
-            <form class="question-form">
-                <div class="question-options">
-                    <label class="question-option">
-                        <input type="radio" name="answerQ7" value="A">
-                        <span class="option-text">A: Pizzas Needed = 1 + (0.5 * 12) + (0.75 * 9) - (0.3 * 12)</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ7" value="B">
-                        <span class="option-text">B: Pizzas Needed = 1 + (0.75 * 12) + (0.5 * 9) - (0.3 * 12)</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ7" value="C">
-                        <span class="option-text">C: Pizzas Needed = 1 + (0.5 * 6) + (0.75 * 5) - (0.3 * 16)</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ7" value="D">
-                        <span class="option-text">D: Pizzas Needed = 1 + (0.75 * 12) + (0.5 * 9) + (0.3 * 12)</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
-
-            <!-- Feedback Container -->
-            <div id="feedback-Q7" class="feedback-text"></div>
-        </div>
-
-        <!-- Question 8 -->
-        <div class="question-container" data-question-id="Q8">
-            <h4 class="question-title">Try this out 🤔</h4>
-            <p class="question-text"><strong>You're trying to predict the rental price of an apartment using
-                    multiple
-                    factors, including size (in square feet), number of rooms, and neighborhood. You test two
-                    models:</strong></p>
-            <p><strong>Model A:</strong> Includes size and number of rooms.</p>
-            <p><strong>Model B:</strong> Includes size, number of rooms, and neighborhood.</p>
-            <p>After running both models, you find that Model B has a significantly higher R² value but also takes
-                longer to compute. What does this tell you?</p>
-
-            <form class="question-form">
-                <div class="question-options">
-                    <label class="question-option">
-                        <input type="radio" name="answerQ8" value="A">
-                        <span class="option-text">A: Model B is definitely the better model because it explains more
-                            variance.</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ8" value="B">
-                        <span class="option-text">B: Model A should be preferred because it's faster and
-                            simpler.</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ8" value="C">
-                        <span class="option-text">C: Model B might be overfitting the data by including too many
-                            factors.</span>
-                    </label>
-
-                    <label class="question-option">
-                        <input type="radio" name="answerQ8" value="D">
-                        <span class="option-text">D: The R² value is irrelevant to choosing the best model.</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
-
-            <!-- Feedback Container -->
-            <div id="feedback-Q8" class="feedback-text"></div>
-        </div>
-
-
-        <h3>Wrapping Up: Why Multiple Linear Regression Matters 🎓</h3>
-        <p>Now that we've moved from simple to multiple regression, you've got a much more powerful tool for making
-            predictions. Whether you're figuring out how many pizzas to order, predicting home prices, or
-            forecasting
-            business sales, this kind of regression can help you make smarter decisions based on real data! 📊</p>
-        <p>We used some example values for β₀, β₁, β₂, β₃, but in the real world, we calculate those using actual
-            data
-            and math tricks like Least Squares Estimation.</p>
-        <p>Want to dive deeper into how we figure out those values..?</p>
-
-
     </div>
 </body>
 
 <script>
 
-    // Function to handle feedback dynamically
+    // Global object to track user stats for all questions
+    const userStats = {};
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbwy4db8cQZLcDDnbQUR_6UYNxGxroOjOU1nMijDPitQAT_ou4hvL9jhwHHGTCWsEiGX8A/exec";
+
+    function startLesson() {
+        let userName = document.getElementById("user-name").value.trim();
+
+        if (userName === "") {
+            alert("Oops! Please enter your name before starting! 😊");
+            return;
+        }
+
+        userStats.userName = userName;
+        // Personalize the welcome message
+        document.getElementById("welcome-message").innerHTML = `Hey ${userName}! Welcome to Linear Regression: Predicting Relationships the Fun Way 🍕📊`;
+
+        // Hide the name section and show the main content
+        document.getElementById("name-section").style.display = "none";
+        document.getElementById("main-content").classList.remove("hidden");
+    }
+
+    // Function to handle question attempts, time tracking, and storing data
     function handleQuestionFeedback(questionId, correctAnswer, feedbackData) {
         const form = document.querySelector(`[data-question-id="${questionId}"] .question-form`);
         const feedbackElement = document.querySelector(`#feedback-${questionId}`);
+        const radioButtons = form.querySelectorAll(`input[name="answer${questionId}"]`);
+
+        // Initialize tracking for this question
+        if (!userStats[questionId]) {
+            userStats[questionId] = {
+                attempts: 0,
+                startTime: null,
+                endTime: null,
+                totalTime: null,
+                isSolved: false
+            };
+        }
+
+        // Start timer when user first selects an option
+        radioButtons.forEach((radio) => {
+            radio.addEventListener("change", () => {
+                if (userStats[questionId].startTime === null) {
+                    userStats[questionId].startTime = new Date().getTime();
+                }
+            });
+        });
 
         form.addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent form submission to avoid page refresh
+            event.preventDefault(); // Prevent page reload
 
-            // Get the selected answer
-            let selectedOption = form.querySelector('input[name="answer' + questionId + '"]:checked');
-
-            if (selectedOption) {
-                let answerValue = selectedOption.value;
-                let feedback = '';
-                let feedbackClass = ''; // This will hold the class for styling the feedback
-
-                // Determine the feedback based on the selected answer
-                if (answerValue == correctAnswer) {
-                    feedback = feedbackData[answerValue].correct;
-                    feedbackClass = 'success';
-                } else {
-                    feedback = feedbackData[answerValue].incorrect;
-                    feedbackClass = 'error';
-                }
-
-                // Display the feedback to the user and apply the relevant style
-                feedbackElement.innerText = feedback;
-                feedbackElement.className = 'feedback-text ' + feedbackClass; // Add the corresponding class for feedback styling
-            } else {
+            let selectedOption = form.querySelector(`input[name="answer${questionId}"]:checked`);
+            if (!selectedOption) {
                 feedbackElement.innerText = "Please select an option before submitting.";
-                feedbackElement.className = 'feedback-text default'; // Apply default feedback styling
+                feedbackElement.className = 'feedback-text default';
+                return;
             }
+
+            // Increment attempt count
+            userStats[questionId].attempts += 1;
+
+            let answerValue = selectedOption.value;
+            let feedback = '';
+            let feedbackClass = '';
+
+            // Check if the answer is correct
+            if (answerValue === correctAnswer) {
+                userStats[questionId].endTime = new Date().getTime();
+                userStats[questionId].totalTime = ((userStats[questionId].endTime - userStats[questionId].startTime) / 1000).toFixed(2); // Convert to seconds
+                userStats[questionId].isSolved = true;
+
+                feedback = feedbackData[answerValue].correct;
+                feedbackClass = 'success';
+
+            } else {
+                feedback = feedbackData[answerValue].incorrect;
+                feedbackClass = 'error';
+            }
+
+            // Display feedback (without showing stats in UI)
+            feedbackElement.innerText = feedback;
+            feedbackElement.className = `feedback-text ${feedbackClass}`;
         });
     }
+
+    // Function to log all user stats on "Complete" button click
+    // Function to send data
+    function sendDataToSheet() {
+        const formData = new FormData();
+
+        // Disable the button to prevent multiple submissions
+        const submitButton = document.getElementById('sendDataBtn');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';  // Optionally change button text
+
+        // Show the loading spinner
+        const spinner = document.getElementById('spinner');
+        spinner.style.display = 'block'; // Show the spinner
+
+        // Show loading feedback (Optional)
+        const feedbackElement = document.getElementById('feedback');
+        feedbackElement.textContent = 'Submitting your data... Please wait.';
+
+        // Loop through userstat object and append each question data to the form
+        Object.keys(userStats).forEach((key) => {
+            const data = userStats[key];
+            if (key !== 'userName') {
+                formData.append(`${key}_attempts`, data.attempts);
+                formData.append(`${key}_startTime`, data.startTime);
+                formData.append(`${key}_endTime`, data.endTime);
+                formData.append(`${key}_totalTime`, data.totalTime);
+                formData.append(`${key}_isSolved`, data.isSolved);
+            }
+        });
+
+        // Append user name
+        formData.append('userName', userStats.userName);
+
+        // Send the data to the Google Apps Script web app
+        fetch(webAppUrl, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Provide success feedback to the user
+                feedbackElement.textContent = 'Data saved successfully! Thankyou for completing the lesson.';
+                alert('Data saved successfully!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Provide error feedback to the user
+                feedbackElement.textContent = 'Failed to send data. Please try again later.';
+                alert('Failed to send data.');
+            })
+            .finally(() => {
+                // Re-enable the button after the request is complete
+                submitButton.disabled = false;
+                submitButton.textContent = 'Complete';  // Reset button text
+
+                // Hide the spinner once the request is finished
+                spinner.style.display = 'none';
+            });
+    }
+
+    // Attach event listener to "Complete" button after the DOM is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        const completeButton = document.getElementById("sendDataBtn");
+        if (completeButton) {
+            completeButton.addEventListener("click", sendDataToSheet);
+        }
+    });
 
     // Questions
     const feedbackDataQ1 = {
